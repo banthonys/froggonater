@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Froggonater 🐸</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --lily-green: #5aad6f;
+      --pond-blue: #a8dbc7;
+      --deep-pond: #6bbfa3;
+      --frog-dark: #3a7d55;
+      --lotus-pink: #f4a7b9;
+      --lotus-light: #fde8ef;
+      --cream: #f9f5ee;
+      --dark-leaf: #2d5e3a;
+      --highlight: #c9f0d8;
+      --shadow: rgba(42, 90, 55, 0.18);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #e8f6ee;
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(90, 173, 111, 0.13) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(168, 219, 199, 0.2) 0%, transparent 40%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cellipse cx='30' cy='30' rx='26' ry='14' fill='none' stroke='%235aad6f' stroke-width='0.4' opacity='0.18'/%3E%3C/svg%3E");
+      min-height: 100vh;
+      color: var(--dark-leaf);
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.82);
+      backdrop-filter: blur(12px);
+      border-bottom: 2.5px solid var(--lily-green);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      box-shadow: 0 2px 18px var(--shadow);
+    }
+
+    .nav-logo {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.7rem;
+      color: var(--frog-dark);
+      letter-spacing: 1px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-logo span.frog-emoji { font-size: 1.5rem; }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--dark-leaf);
+      padding: 6px 14px;
+      border-radius: 999px;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+    }
+    .nav-links a:hover {
+      background: var(--lily-green);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+    .nav-links a.contact-btn {
+      background: var(--lotus-pink);
+      color: var(--dark-leaf);
+      border: 2px solid #e78aa8;
+    }
+    .nav-links a.contact-btn:hover {
+      background: #e78aa8;
+      color: #fff;
+    }
+
+    /* ── HAMBURGER ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 26px;
+      height: 3px;
+      background: var(--frog-dark);
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+
+    /* ── MOBILE MENU ── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0; right: 0;
+      background: rgba(255,255,255,0.97);
+      border-bottom: 2px solid var(--lily-green);
+      flex-direction: column;
+      padding: 16px 24px 24px;
+      gap: 8px;
+      z-index: 99;
+      box-shadow: 0 8px 30px var(--shadow);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--dark-leaf);
+      padding: 10px 16px;
+      border-radius: 14px;
+      transition: background 0.2s;
+    }
+    .mobile-menu a:hover { background: var(--highlight); }
+    .mobile-menu a.contact-btn {
+      background: var(--lotus-pink);
+      color: var(--dark-leaf);
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    /* ── BANNER ── */
+    .banner-wrap {
+      width: 100%;
+      overflow: hidden;
+      border-bottom: 4px solid var(--lily-green);
+      position: relative;
+    }
+    .banner-wrap img {
+      width: 100%;
+      display: block;
+      max-height: 340px;
+      object-fit: cover;
+      object-position: center;
+    }
+    .banner-title {
+      position: absolute;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      color: #fff;
+      text-shadow: 0 3px 16px rgba(45,94,58,0.7), 0 1px 0 var(--frog-dark);
+      white-space: nowrap;
+      letter-spacing: 2px;
+      pointer-events: none;
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      max-width: 900px;
+      margin: 48px auto;
+      padding: 0 20px;
+    }
+
+    .section-card {
+      background: rgba(255,255,255,0.78);
+      border-radius: 28px;
+      padding: 36px 40px;
+      box-shadow: 0 4px 30px var(--shadow);
+      border: 2px solid rgba(90,173,111,0.25);
+      backdrop-filter: blur(6px);
+      animation: fadeUp 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-card h2 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.9rem;
+      color: var(--frog-dark);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-card p {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: #3a5c44;
+    }
+
+    /* ── SOCIALS ── */
+    .socials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .social-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 18px 10px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      border: 2.5px solid transparent;
+      letter-spacing: 0.3px;
+      color: #fff;
+    }
+    .social-btn:hover {
+      transform: translateY(-5px) scale(1.04);
+      box-shadow: 0 8px 24px var(--shadow);
+    }
+    .social-btn .icon { font-size: 1.8rem; }
+
+    .btn-twitch   { background: #9146FF; border-color: #7b2fff; }
+    .btn-tiktok   { background: linear-gradient(135deg,#010101,#69C9D0); border-color: #69C9D0; }
+    .btn-youtube  { background: #FF0000; border-color: #cc0000; }
+    .btn-twitter  { background: #1DA1F2; border-color: #0d8ed9; }
+    .btn-instagram{ background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); border-color: #dc2743; }
+
+    /* ── MUSIC ── */
+    .music-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .music-card {
+      background: linear-gradient(135deg, var(--highlight), var(--pond-blue));
+      border-radius: 18px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border: 2px solid rgba(90,173,111,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .music-card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px var(--shadow); }
+    .music-card .music-emoji { font-size: 2rem; }
+    .music-card .music-title { font-family: 'Fredoka One', cursive; font-size: 1.05rem; color: var(--dark-leaf); }
+    .music-card .music-sub   { font-size: 0.82rem; color: var(--frog-dark); font-weight: 600; }
+    .music-card a {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 6px 16px;
+      background: var(--frog-dark);
+      color: #fff;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: background 0.2s;
+      width: fit-content;
+    }
+    .music-card a:hover { background: var(--lily-green); }
+
+    /* ── CONTACT ── */
+    .contact-cta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 18px;
+      margin-top: 18px;
+    }
+    .contact-cta a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: var(--lotus-pink);
+      color: var(--dark-leaf);
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 1rem;
+      text-decoration: none;
+      border: 2.5px solid #e78aa8;
+      transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 3px 14px rgba(231,138,168,0.3);
+    }
+    .contact-cta a:hover {
+      transform: translateY(-3px);
+      background: #e78aa8;
+      color: #fff;
+      box-shadow: 0 7px 22px rgba(231,138,168,0.45);
+    }
+    .contact-cta .email-display {
+      font-size: 0.95rem;
+      color: var(--frog-dark);
+      font-weight: 700;
+    }
+
+    /* ── LILY PAD DIVIDER ── */
+    .divider {
+      text-align: center;
+      font-size: 1.5rem;
+      margin: 8px 0;
+      letter-spacing: 6px;
+      opacity: 0.55;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 32px 20px;
+      font-size: 0.85rem;
+      color: var(--frog-dark);
+      font-weight: 700;
+      border-top: 2px solid rgba(90,173,111,0.25);
+      margin-top: 40px;
+    }
+    footer span { opacity: 0.7; }
+
+    /* ── FLOATING FROGS ── */
+    .floaty {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      font-size: 2.4rem;
+      animation: bob 3s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 50;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
+    }
+    @keyframes bob {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .section-card { padding: 26px 22px; }
+      .section-card h2 { font-size: 1.5rem; }
+      .banner-title { font-size: clamp(1.5rem, 8vw, 2.4rem); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#home">
+      <span class="frog-emoji">🐸</span> Froggonater
+    </a>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About Me</a></li>
+      <li><a href="#music">My Music</a></li>
+      <li><a href="#socials">Socials</a></li>
+      <li><a href="mailto:froggonater@gmail.com" class="contact-btn">📬 Contact Us</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home"   onclick="closeMenu()">🏠 Home</a>
+    <a href="#about"  onclick="closeMenu()">🐸 About Me</a>
+    <a href="#music"  onclick="closeMenu()">🎵 My Music</a>
+    <a href="#socials"onclick="closeMenu()">🌿 Socials</a>
+    <a href="mailto:froggonater@gmail.com" class="contact-btn" onclick="closeMenu()">📬 Contact Us</a>
+  </div>
+
+  <!-- BANNER -->
+  <div class="banner-wrap" id="home">
+    <img src="vg_froggy-pond-banner-twitch.png" alt="Froggonater Banner – cute frogs on lily pads in a pond" />
+    <div class="banner-title">🐸 Froggonater</div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section" id="about">
+    <div class="section-card" style="animation-delay:0.05s">
+      <h2>🌿 About Me</h2>
+      <p>
+        Hey there, welcome to the pond! 🐸 I'm <strong>Froggonater</strong> — your favourite frog
+        on the internet. I stream, make music, and vibe on lily pads across Twitch, TikTok, and beyond.
+        Whether you're here to chill, listen, or just stare at frogs — you've found the right spot.
+        Grab a snack 🍪, hop on in, and let's have some fun!
+      </p>
+    </div>
+  </div>
+
+  <div class="divider">🌸 🍃 🐸 🍃 🌸</div>
+
+  <!-- MUSIC -->
+  <div class="section" id="music">
+    <div class="section-card" style="animation-delay:0.1s">
+      <h2>🎵 My Music</h2>
+      <p>Lo-fi pond vibes, chill beats, and maybe the occasional frog chorus. Check out my tracks below!</p>
+      <div class="music-grid">
+        <div class="music-card">
+          <div class="music-emoji">🎶</div>
+          <div class="music-title">Lily Pad Sessions</div>
+          <div class="music-sub">Chill · Lo-fi</div>
+          <a href="#music">▶ Listen</a>
+        </div>
+        <div class="music-card">
+          <div class="music-emoji">🌙</div>
+          <div class="music-title">Midnight Pond</div>
+          <div class="music-sub">Ambient · Dream</div>
+          <a href="#music">▶ Listen</a>
+        </div>
+        <div class="music-card">
+          <div class="music-emoji">🐸</div>
+          <div class="music-title">Ribbiting Beats</div>
+          <div class="music-sub">Electronic · Fun</div>
+          <a href="#music">▶ Listen</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider">🌸 🍃 🐸 🍃 🌸</div>
+
+  <!-- SOCIALS -->
+  <div class="section" id="socials">
+    <div class="section-card" style="animation-delay:0.15s">
+      <h2>🌐 Find Me Online</h2>
+      <p>Come hang out, follow along, and join the frog squad across all platforms!</p>
+      <div class="socials-grid">
+        <a class="social-btn btn-twitch" href="https://twitch.tv/froggonater" target="_blank" rel="noopener">
+          <span class="icon">🟣</span> Twitch
+        </a>
+        <a class="social-btn btn-tiktok" href="https://tiktok.com/@froggonater" target="_blank" rel="noopener">
+          <span class="icon">🎵</span> TikTok
+        </a>
+        <a class="social-btn btn-youtube" href="https://youtube.com/@froggonater" target="_blank" rel="noopener">
+          <span class="icon">▶️</span> YouTube
+        </a>
+        <a class="social-btn btn-twitter" href="https://twitter.com/froggonater" target="_blank" rel="noopener">
+          <span class="icon">🐦</span> Twitter / X
+        </a>
+        <a class="social-btn btn-instagram" href="https://instagram.com/froggonater" target="_blank" rel="noopener">
+          <span class="icon">📸</span> Instagram
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider">🌸 🍃 🐸 🍃 🌸</div>
+
+  <!-- CONTACT -->
+  <div class="section" id="contact">
+    <div class="section-card" style="animation-delay:0.2s">
+      <h2>📬 Contact Us</h2>
+      <p>Got a collab idea, a business inquiry, or just want to say hi? Drop me a message — I read every email! 🐸💌</p>
+      <div class="contact-cta">
+        <a href="mailto:froggonater@gmail.com">📬 Send an Email</a>
+        <span class="email-display">froggonater@gmail.com</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    🐸 <strong>Froggonater</strong> &nbsp;·&nbsp; <span>Made with love & lily pads 🌿</span><br/>
+    <span style="font-size:0.78rem; opacity:0.5; margin-top:6px; display:block;">© 2026 Froggonater. All rights reserved.</span>
+  </footer>
+
+  <!-- FLOATING FROG -->
+  <div class="floaty">🐸</div>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    }
+    function closeMenu() {
+      document.getElementById('mobileMenu').classList.remove('open');
+    }
+    // Close menu on outside click
+    document.addEventListener('click', function(e) {
+      const menu = document.getElementById('mobileMenu');
+      const btn = document.querySelector('.hamburger');
+      if (menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
+        menu.classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>
